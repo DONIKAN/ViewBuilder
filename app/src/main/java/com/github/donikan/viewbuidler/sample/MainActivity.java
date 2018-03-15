@@ -55,31 +55,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .create();
-
-
-        GridLayoutManager tagLayoutManager = new GridLayoutManager(MainActivity.this, 3);
-        tagLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        new TagBuilder(MainActivity.this)
-                .setRecyclerView((RecyclerView) findViewById(R.id.rvTag2))
-                .setLayoutManager(tagLayoutManager)
-                .setDefaultStyle()
-                .setSelectable(true)
-                .setEntries(entries)
-                .setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void OnItemClick(Entry entry, int position) {
-                        Toast.makeText(MainActivity.this, "Tag 2: " + entry.toString(), Toast.LENGTH_LONG).show();
-                    }
-                })
-                .create();
     }
 
     private void setUpRadio() {
         // Radio
         new RadioBuilder(MainActivity.this)
                 .setRecyclerView((RecyclerView) findViewById(R.id.rvRadio))
-                .setOrientation(LinearLayout.HORIZONTAL)
+                .setOrientation(LinearLayout.VERTICAL)
                 .setCustomView(R.layout.custom_item_radio)
                 .setEntries(entries)
                 .setOnItemClickListener(new OnItemClickListener() {
