@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         tagCategories.get(0).setSelected(true);
 
+        // Tag
         new TagBuilder(MainActivity.this)
                 .setRecyclerView((RecyclerView) findViewById(R.id.rvTag1))
 //                .setOrientation(LinearLayout.VERTICAL)

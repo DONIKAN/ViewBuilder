@@ -10,17 +10,28 @@ ViewBuilder for Android is a library for easily building useful views like Tags,
 ## How to use
 
 ```java
+// fill tag entries
+List<Category> categories = DataFixture.getCategoies();
+List<Entry> tagCategories = new ArrayList<>();
+
+for (int i = 0; i < categories.size(); i++) {
+    tagCategories.add(new Entry<Category>(categories.get(i).getId(), categories.get(i).getTitle(), categories.get(i)));
+}
+
+tagCategories.get(0).setSelected(true);
+
+// Tag
 new TagBuilder(MainActivity.this)
-                .setRecyclerView((RecyclerView) findViewById(R.id.rvTag2))
-                .setLayoutManager(tagLayoutManager)
-                .setDefaultStyle()
-                .setSelectable(false)
-                .setEntries(tagCategories)
-                .setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void OnItemClick(Entry entry, int position) {
-                        Toast.makeText(MainActivity.this, entry.toString(), Toast.LENGTH_LONG).show();
-                    }
-                })
-                .create();
+        .setRecyclerView((RecyclerView) findViewById(R.id.rvTag1))
+//                .setOrientation(LinearLayout.VERTICAL)
+        .setCustomSelectedStyle(R.style.CustomTagSelectedStyle, R.drawable.custom_bg_tag_selected)
+        .setCustomUnselectedStyle(R.style.CustomTagUnselectedStyle, R.drawable.custom_bg_tag_unselected)
+        .setEntries(tagCategories)
+        .setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void OnItemClick(Entry entry, int position) {
+                Toast.makeText(MainActivity.this, entry.toString(), Toast.LENGTH_LONG).show();
+            }
+        })
+        .create();
 ```
