@@ -35,18 +35,24 @@ public class MainActivity extends AppCompatActivity {
         List<Category> categories = DataFixture.getCategoies();
         List<Entry> tagCategories = new ArrayList<>();
 
-        for(int i = 0; i < categories.size(); i++) {
+        for (int i = 0; i < categories.size(); i++) {
             tagCategories.add(new Entry<Category>(categories.get(i).getId(), categories.get(i).getTitle(), categories.get(i)));
         }
 
         tagCategories.get(0).setSelected(true);
 
-        TagAdapter tagAdapter = new TagAdapter(tagCategories, new OnItemClickListener() {
-            @Override
-            public void OnItemClick(Entry entry, int position) {
-                Toast.makeText(MainActivity.this, entry.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
+        TagAdapter tagAdapter = new TagAdapter()
+//                .setCustomView(R.layout.custom_item_tag)
+//                .setDefaultStyle()
+                .setCustomSelectedStyle(R.style.CustomTagSelectedStyle, R.drawable.custom_bg_tag_selected)
+                .setCustomUnselectedStyle(R.style.CustomTagUnselectedStyle, R.drawable.custom_bg_tag_unselected)
+                .setEntries(tagCategories)
+                .setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void OnItemClick(Entry entry, int position) {
+                        Toast.makeText(MainActivity.this, entry.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
         rvTags.setAdapter(tagAdapter);
     }
 }
