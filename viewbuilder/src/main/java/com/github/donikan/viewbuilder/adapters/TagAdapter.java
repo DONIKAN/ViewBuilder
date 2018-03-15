@@ -1,10 +1,9 @@
 package com.github.donikan.viewbuilder.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +27,8 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
     private List<Entry> entries;
     private OnItemClickListener onItemClickListener;
 
+    private boolean mSelectable;
+
     private int mView;
     private int mTagSelectedStyle;
     private int mTagSelectedBackground;
@@ -35,17 +36,12 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
     private int mTagUnselectedBackground;
 
     public TagAdapter() {
+        mSelectable = true;
         mView = R.layout.item_tag;
         mTagSelectedStyle = -1;
         mTagSelectedBackground = -1;
         mTagUnselectedStyle = -1;
         mTagUnselectedBackground = -1;
-    }
-
-    public TagAdapter(List<Entry> entries, OnItemClickListener onItemClickListener) {
-        this();
-        this.entries = entries;
-        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -63,21 +59,24 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
 
         holder.bind(entry);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < getItemCount(); i++) entries.get(i).setSelected(false);
-                notifyDataSetChanged();
-                entries.get(pos).setSelected(true);
-                notifyDataSetChanged();
-                onItemClickListener.OnItemClick(entries.get(pos), pos);
-            }
-        });
+        if (mSelectable) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i < getItemCount(); i++) entries.get(i).setSelected(false);
+                    notifyDataSetChanged();
+                    entries.get(pos).setSelected(true);
+                    notifyDataSetChanged();
+                    if (onItemClickListener != null)
+                        onItemClickListener.OnItemClick(entries.get(pos), pos);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return entries.size();
+        if (entries != null) return entries.size(); else return 0;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -122,6 +121,12 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
         return this;
     }
 
+    public TagAdapter setSelectable(boolean selectable) {
+        mSelectable = selectable;
+        notifyDataSetChanged();
+        return this;
+    }
+
     public TagAdapter setCustomView(@LayoutRes int customView) {
         mView = customView;
         return this;
@@ -139,7 +144,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
         return this;
     }
 
-    public TagAdapter setEntries(List<Entry> entries) {
+    public TagAdapter setEntries(@NonNull List<Entry> entries) {
         this.entries = entries;
         notifyDataSetChanged();
         return this;
@@ -155,7 +160,27 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
         return entries;
     }
 
-    public OnItemClickListener getOnItemClickListener() {
-        return onItemClickListener;
+    public boolean isSelectable() {
+        return mSelectable;
+    }
+
+    public int getCustomView() {
+        return mView;
+    }
+
+    public int getTagSelectedStyle() {
+        return mTagSelectedStyle;
+    }
+
+    public int getTagSelectedBackground() {
+        return mTagSelectedBackground;
+    }
+
+    public int getTagUnselectedStyle() {
+        return mTagUnselectedStyle;
+    }
+
+    public int getTagUnselectedBackground() {
+        return mTagUnselectedBackground;
     }
 }

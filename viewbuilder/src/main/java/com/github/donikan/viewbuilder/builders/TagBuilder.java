@@ -1,9 +1,12 @@
 package com.github.donikan.viewbuilder.builders;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 
 import com.github.donikan.viewbuilder.R;
 import com.github.donikan.viewbuilder.adapters.TagAdapter;
@@ -19,26 +22,23 @@ import java.util.List;
 
 public class TagBuilder {
 
-    // some internal vars
-    // variable to check if a builder is only used once
     protected List<Entry> mEntries;
     protected OnItemClickListener mListener;
+
     protected TagAdapter mAdapter;
 
-    // the context to use
     protected Context mContext;
+    protected RecyclerView mRecyclerview;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected int mCustomView;
-//    protected ViewGroup mRootView;
-
-    /*public TagBuilder() {
-        mEntries = new ArrayList<>();
-    }*/
 
     public TagBuilder(Context context) {
         mEntries = new ArrayList<>();
         mContext = context;
+        mAdapter = new TagAdapter();
         mCustomView = R.layout.item_tag;
+        mLayoutManager = new LinearLayoutManager(mContext);
+        ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
     }
 
     public TagBuilder(Context context, List<Entry> entries) {
@@ -46,22 +46,8 @@ public class TagBuilder {
         mEntries = entries;
     }
 
-    public void create() {
-
-    }
-
-    public TagBuilder setContext(Context context) {
-        mContext = context;
-        return this;
-    }
-
-    public TagBuilder setEntries(List<Entry> entries) {
-        mEntries = entries;
-        return this;
-    }
-
-    public TagBuilder setAdatper(TagAdapter adapter) {
-        mAdapter = adapter;
+    public TagBuilder setOrientation(int orientation) {
+        ((LinearLayoutManager) mLayoutManager).setOrientation(orientation);
         return this;
     }
 
@@ -70,14 +56,59 @@ public class TagBuilder {
         return this;
     }
 
+    public TagBuilder setRecyclerView(@NonNull RecyclerView recyclerView) {
+        mRecyclerview = recyclerView;
+        return this;
+    }
+
     public TagBuilder setListener(OnItemClickListener onItemClickListener) {
         mListener = onItemClickListener;
         return this;
     }
 
-    public TagBuilder setCustomView(@IdRes int customView) {
-        mCustomView = customView;
+    public TagBuilder setDefaultStyle() {
+        mAdapter.setDefaultStyle();
         return this;
+    }
+
+    public TagBuilder setCustomView(@LayoutRes int customView) {
+        mAdapter.setCustomView(customView);
+        return this;
+    }
+
+    public TagBuilder setCustomSelectedStyle(@StyleRes int customSelectedStyle, @DrawableRes int customSelectedBackground) {
+        mAdapter.setCustomSelectedStyle(customSelectedStyle, customSelectedBackground);
+        return this;
+    }
+
+    public TagBuilder setCustomUnselectedStyle(@StyleRes int customUnselectedStyle, @DrawableRes int customUnselectedBackground) {
+        mAdapter.setCustomUnselectedStyle(customUnselectedStyle, customUnselectedBackground);
+        return this;
+    }
+
+    public TagBuilder setSelectable(boolean selectable) {
+        mAdapter.setSelectable(selectable);
+        return this;
+    }
+
+    public TagBuilder setEntries(List<Entry> entries) {
+        mAdapter.setEntries(entries);
+        return this;
+    }
+
+    public TagBuilder setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mAdapter.setOnItemClickListener(onItemClickListener);
+        return this;
+    }
+
+    public void create() {
+        if (mRecyclerview != null) {
+            mRecyclerview.setHasFixedSize(true);
+            mRecyclerview.setLayoutManager(mLayoutManager);
+            mRecyclerview.setAdapter(mAdapter);
+        } else {
+            throw new RuntimeException("RecyclerView cannot be null");
+        }
     }
 
     public Context getContext() {
@@ -85,6 +116,30 @@ public class TagBuilder {
     }
 
     public List<Entry> getEntries() {
-        return mEntries;
+        return mAdapter.getEntries();
+    }
+
+    public boolean isSelectable() {
+        return mAdapter.isSelectable();
+    }
+
+    public int getCustomView() {
+        return mAdapter.getCustomView();
+    }
+
+    public int getTagSelectedStyle() {
+        return mAdapter.getTagSelectedStyle();
+    }
+
+    public int getTagSelectedBackground() {
+        return mAdapter.getTagSelectedBackground();
+    }
+
+    public int getTagUnselectedStyle() {
+        return mAdapter.getTagUnselectedStyle();
+    }
+
+    public int getTagUnselectedBackground() {
+        return mAdapter.getTagUnselectedBackground();
     }
 }
