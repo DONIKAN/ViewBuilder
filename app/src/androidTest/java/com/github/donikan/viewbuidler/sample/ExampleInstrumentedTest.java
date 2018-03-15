@@ -1,4 +1,4 @@
-package com.github.donikan.viewbuidler;
+package com.github.donikan.viewbuidler.sample;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

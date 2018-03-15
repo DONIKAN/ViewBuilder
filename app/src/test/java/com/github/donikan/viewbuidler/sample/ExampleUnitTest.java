@@ -1,4 +1,4 @@
-package com.github.donikan.viewbuidler;
+package com.github.donikan.viewbuidler.sample;
 
 import org.junit.Test;
 

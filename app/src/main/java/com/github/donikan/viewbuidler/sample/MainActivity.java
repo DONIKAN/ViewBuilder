@@ -1,4 +1,4 @@
-package com.github.donikan.viewbuidler;
+package com.github.donikan.viewbuidler.sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
