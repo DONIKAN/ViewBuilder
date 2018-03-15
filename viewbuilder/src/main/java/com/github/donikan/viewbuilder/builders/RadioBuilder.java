@@ -9,7 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.github.donikan.viewbuilder.R;
-import com.github.donikan.viewbuilder.adapters.TagAdapter;
+import com.github.donikan.viewbuilder.adapters.RadioAdapter;
 import com.github.donikan.viewbuilder.entries.Entry;
 import com.github.donikan.viewbuilder.listeners.OnItemClickListener;
 
@@ -20,83 +20,68 @@ import java.util.List;
  * Created by DONIKAN on 15/03/2018.
  */
 
-public class TagBuilder {
+public class RadioBuilder {
 
     protected List<Entry> mEntries;
     protected OnItemClickListener mListener;
 
-    protected TagAdapter mAdapter;
+    protected RadioAdapter mAdapter;
 
     protected Context mContext;
     protected RecyclerView mRecyclerview;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected int mCustomView;
 
-    public TagBuilder(Context context) {
+    public RadioBuilder(Context context) {
         mEntries = new ArrayList<>();
         mContext = context;
-        mAdapter = new TagAdapter();
-        mCustomView = R.layout.item_tag;
+        mAdapter = new RadioAdapter();
+        mCustomView = R.layout.item_radio;
         mLayoutManager = new LinearLayoutManager(mContext);
-        ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
+        ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayoutManager.VERTICAL);
     }
 
-    public TagBuilder(Context context, List<Entry> entries) {
+    public RadioBuilder(Context context, List<Entry> entries) {
         this(context);
         mEntries = entries;
     }
 
-    public TagBuilder setOrientation(int orientation) {
+    public RadioBuilder setOrientation(int orientation) {
         ((LinearLayoutManager) mLayoutManager).setOrientation(orientation);
         return this;
     }
 
-    public TagBuilder setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+    public RadioBuilder setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mLayoutManager = layoutManager;
         return this;
     }
 
-    public TagBuilder setRecyclerView(@NonNull RecyclerView recyclerView) {
+    public RadioBuilder setRecyclerView(@NonNull RecyclerView recyclerView) {
         mRecyclerview = recyclerView;
         return this;
     }
 
-    public TagBuilder setListener(OnItemClickListener onItemClickListener) {
+    public RadioBuilder setListener(OnItemClickListener onItemClickListener) {
         mListener = onItemClickListener;
         return this;
     }
 
-    public TagBuilder setDefaultStyle() {
+    public RadioBuilder setDefaultStyle() {
         mAdapter.setDefaultStyle();
         return this;
     }
 
-    public TagBuilder setCustomView(@LayoutRes int customView) {
+    public RadioBuilder setCustomView(@LayoutRes int customView) {
         mAdapter.setCustomView(customView);
         return this;
     }
 
-    public TagBuilder setCustomSelectedStyle(@StyleRes int customSelectedStyle, @DrawableRes int customSelectedBackground) {
-        mAdapter.setCustomSelectedStyle(customSelectedStyle, customSelectedBackground);
-        return this;
-    }
-
-    public TagBuilder setCustomUnselectedStyle(@StyleRes int customUnselectedStyle, @DrawableRes int customUnselectedBackground) {
-        mAdapter.setCustomUnselectedStyle(customUnselectedStyle, customUnselectedBackground);
-        return this;
-    }
-
-    public TagBuilder setSelectable(boolean selectable) {
-        mAdapter.setSelectable(selectable);
-        return this;
-    }
-
-    public TagBuilder setEntries(List<Entry> entries) {
+    public RadioBuilder setEntries(List<Entry> entries) {
         mAdapter.setEntries(entries);
         return this;
     }
 
-    public TagBuilder setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public RadioBuilder setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mAdapter.setOnItemClickListener(onItemClickListener);
         return this;
     }
@@ -123,27 +108,7 @@ public class TagBuilder {
         return mAdapter.getSelectedEntry();
     }
 
-    public boolean isSelectable() {
-        return mAdapter.isSelectable();
-    }
-
     public int getCustomView() {
         return mAdapter.getCustomView();
-    }
-
-    public int getTagSelectedStyle() {
-        return mAdapter.getTagSelectedStyle();
-    }
-
-    public int getTagSelectedBackground() {
-        return mAdapter.getTagSelectedBackground();
-    }
-
-    public int getTagUnselectedStyle() {
-        return mAdapter.getTagUnselectedStyle();
-    }
-
-    public int getTagUnselectedBackground() {
-        return mAdapter.getTagUnselectedBackground();
     }
 }

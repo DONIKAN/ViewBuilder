@@ -22,6 +22,7 @@ import java.util.List;
  */
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
+    private Entry mSelectedEntry;
 
     private Context context;
     private List<Entry> entries;
@@ -65,10 +66,11 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
                 public void onClick(View v) {
                     for (int i = 0; i < getItemCount(); i++) entries.get(i).setSelected(false);
                     notifyDataSetChanged();
-                    entries.get(pos).setSelected(true);
+                    mSelectedEntry = entries.get(pos);
+                    mSelectedEntry.setSelected(true);
                     notifyDataSetChanged();
                     if (onItemClickListener != null)
-                        onItemClickListener.OnItemClick(entries.get(pos), pos);
+                        onItemClickListener.OnItemClick(mSelectedEntry, pos);
                 }
             });
         }
@@ -182,5 +184,9 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
 
     public int getTagUnselectedBackground() {
         return mTagUnselectedBackground;
+    }
+
+    public Entry getSelectedEntry() {
+        return mSelectedEntry;
     }
 }

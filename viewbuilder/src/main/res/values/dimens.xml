@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="radio_button_width">15dp</dimen>
+    <dimen name="radio_button_padding">3dp</dimen>
+    <dimen name="radio_button_text_size">12sp</dimen>
+</resources>
