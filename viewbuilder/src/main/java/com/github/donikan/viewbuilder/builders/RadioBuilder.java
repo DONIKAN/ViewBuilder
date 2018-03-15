@@ -81,6 +81,16 @@ public class RadioBuilder {
         return this;
     }
 
+    public RadioBuilder add(Entry entry) {
+        mAdapter.add(entry);
+        return this;
+    }
+
+    public RadioBuilder add(List<Entry> entries) {
+        mAdapter.add(entries);
+        return this;
+    }
+
     public RadioBuilder setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mAdapter.setOnItemClickListener(onItemClickListener);
         return this;

@@ -107,6 +107,18 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.ViewHolder> 
         return this;
     }
 
+    public RadioAdapter add(@NonNull Entry entry) {
+        this.entries.add(entry);
+        notifyDataSetChanged();
+        return this;
+    }
+
+    public RadioAdapter add(@NonNull List<Entry> entries) {
+        this.entries.addAll(entries);
+        notifyDataSetChanged();
+        return this;
+    }
+
     public RadioAdapter setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
         notifyDataSetChanged();

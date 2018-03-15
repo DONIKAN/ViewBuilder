@@ -96,6 +96,16 @@ public class TagBuilder {
         return this;
     }
 
+    public TagBuilder add(Entry entry) {
+        mAdapter.add(entry);
+        return this;
+    }
+
+    public TagBuilder add(List<Entry> entries) {
+        mAdapter.add(entries);
+        return this;
+    }
+
     public TagBuilder setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mAdapter.setOnItemClickListener(onItemClickListener);
         return this;

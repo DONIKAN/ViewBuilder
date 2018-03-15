@@ -152,6 +152,18 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
         return this;
     }
 
+    public TagAdapter add(@NonNull Entry entry) {
+        this.entries.add(entry);
+        notifyDataSetChanged();
+        return this;
+    }
+
+    public TagAdapter add(@NonNull List<Entry> entries) {
+        this.entries.addAll(entries);
+        notifyDataSetChanged();
+        return this;
+    }
+
     public TagAdapter setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
         notifyDataSetChanged();
