@@ -5,10 +5,13 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.github.donikan.viewbuilder.R;
+import com.github.donikan.viewbuilder.ViewBuidler;
 import com.github.donikan.viewbuilder.adapters.RadioAdapter;
 import com.github.donikan.viewbuilder.entries.Entry;
 import com.github.donikan.viewbuilder.listeners.OnItemClickListener;
@@ -30,6 +33,10 @@ public class RadioBuilder {
     protected Context mContext;
     protected RecyclerView mRecyclerview;
     protected RecyclerView.LayoutManager mLayoutManager;
+    private ViewBuidler.LayoutManager mLayoutManagerType;
+    private int mOrientation;
+    protected int mSpanCount;
+
     protected int mCustomView;
 
     public RadioBuilder(Context context) {
@@ -37,6 +44,9 @@ public class RadioBuilder {
         mContext = context;
         mAdapter = new RadioAdapter();
         mCustomView = R.layout.item_radio;
+        mLayoutManagerType = ViewBuidler.LayoutManager.LINEAR;
+        mOrientation = LinearLayoutManager.HORIZONTAL;
+        mSpanCount = 3;
         mLayoutManager = new LinearLayoutManager(mContext);
         ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayoutManager.VERTICAL);
     }
@@ -46,13 +56,52 @@ public class RadioBuilder {
         mEntries = entries;
     }
 
-    public RadioBuilder setOrientation(int orientation) {
-        ((LinearLayoutManager) mLayoutManager).setOrientation(orientation);
+    public RadioBuilder setLayoutManager(ViewBuidler.LayoutManager layoutManager) {
+        mLayoutManagerType = layoutManager;
+        switch (layoutManager) {
+            case LINEAR:
+                mLayoutManager = new LinearLayoutManager(mContext);
+                ((LinearLayoutManager) mLayoutManager).setOrientation(mOrientation);
+                break;
+            case GRID:
+                mLayoutManager = new GridLayoutManager(mContext, mSpanCount);
+                ((GridLayoutManager) mLayoutManager).setOrientation(mOrientation);
+                break;
+            case STAGGERED:
+                mLayoutManager = new StaggeredGridLayoutManager(mSpanCount, mOrientation);
+                break;
+        }
         return this;
     }
 
     public RadioBuilder setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mLayoutManager = layoutManager;
+        return this;
+    }
+
+    public RadioBuilder setOrientation(int orientation) {
+        mOrientation = orientation;
+        switch (mLayoutManagerType) {
+            case LINEAR:
+                ((LinearLayoutManager) mLayoutManager).setOrientation(orientation);
+                break;
+            case GRID:
+                ((GridLayoutManager) mLayoutManager).setOrientation(orientation);
+                break;
+            case STAGGERED:
+                ((StaggeredGridLayoutManager) mLayoutManager).setOrientation(orientation);
+                break;
+        }
+        return this;
+    }
+
+    public RadioBuilder setSpanCount(int spanCount) {
+        if (mLayoutManager instanceof GridLayoutManager) {
+            ((GridLayoutManager) mLayoutManager).setSpanCount(spanCount);
+        }
+        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
+            ((StaggeredGridLayoutManager) mLayoutManager).setSpanCount(spanCount);
+        }
         return this;
     }
 
@@ -120,5 +169,9 @@ public class RadioBuilder {
 
     public int getCustomView() {
         return mAdapter.getCustomView();
+    }
+
+    public int getSpanCount() {
+        return mSpanCount;
     }
 }

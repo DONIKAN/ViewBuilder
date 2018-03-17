@@ -5,10 +5,13 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.github.donikan.viewbuilder.R;
+import com.github.donikan.viewbuilder.ViewBuidler.LayoutManager;
 import com.github.donikan.viewbuilder.adapters.TagAdapter;
 import com.github.donikan.viewbuilder.entries.Entry;
 import com.github.donikan.viewbuilder.listeners.OnItemClickListener;
@@ -30,6 +33,10 @@ public class TagBuilder {
     protected Context mContext;
     protected RecyclerView mRecyclerview;
     protected RecyclerView.LayoutManager mLayoutManager;
+    private LayoutManager mLayoutManagerType;
+    private int mOrientation;
+    protected int mSpanCount;
+
     protected int mCustomView;
 
     public TagBuilder(Context context) {
@@ -37,6 +44,9 @@ public class TagBuilder {
         mContext = context;
         mAdapter = new TagAdapter();
         mCustomView = R.layout.item_tag;
+        mLayoutManagerType = LayoutManager.LINEAR;
+        mOrientation = LinearLayoutManager.HORIZONTAL;
+        mSpanCount = 3;
         mLayoutManager = new LinearLayoutManager(mContext);
         ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
     }
@@ -46,13 +56,52 @@ public class TagBuilder {
         mEntries = entries;
     }
 
-    public TagBuilder setOrientation(int orientation) {
-        ((LinearLayoutManager) mLayoutManager).setOrientation(orientation);
+    public TagBuilder setLayoutManager(LayoutManager layoutManager) {
+        mLayoutManagerType = layoutManager;
+        switch (layoutManager) {
+            case LINEAR:
+                mLayoutManager = new LinearLayoutManager(mContext);
+                ((LinearLayoutManager) mLayoutManager).setOrientation(mOrientation);
+                break;
+            case GRID:
+                mLayoutManager = new GridLayoutManager(mContext, mSpanCount);
+                ((GridLayoutManager) mLayoutManager).setOrientation(mOrientation);
+                break;
+            case STAGGERED:
+                mLayoutManager = new StaggeredGridLayoutManager(mSpanCount, mOrientation);
+                break;
+        }
         return this;
     }
 
     public TagBuilder setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mLayoutManager = layoutManager;
+        return this;
+    }
+
+    public TagBuilder setOrientation(int orientation) {
+        mOrientation = orientation;
+        switch (mLayoutManagerType) {
+            case LINEAR:
+                ((LinearLayoutManager) mLayoutManager).setOrientation(orientation);
+                break;
+            case GRID:
+                ((GridLayoutManager) mLayoutManager).setOrientation(orientation);
+                break;
+            case STAGGERED:
+                ((StaggeredGridLayoutManager) mLayoutManager).setOrientation(orientation);
+                break;
+        }
+        return this;
+    }
+
+    public TagBuilder setSpanCount(int spanCount) {
+        if (mLayoutManager instanceof GridLayoutManager) {
+            ((GridLayoutManager) mLayoutManager).setSpanCount(spanCount);
+        }
+        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
+            ((StaggeredGridLayoutManager) mLayoutManager).setSpanCount(spanCount);
+        }
         return this;
     }
 
@@ -155,5 +204,9 @@ public class TagBuilder {
 
     public int getTagUnselectedBackground() {
         return mAdapter.getTagUnselectedBackground();
+    }
+
+    public int getSpanCount() {
+        return mSpanCount;
     }
 }
