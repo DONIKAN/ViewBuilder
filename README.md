@@ -44,14 +44,16 @@ entries.get(0).setSelected(true);
 ```java
 new TagBuilder(MainActivity.this)
         .setRecyclerView((RecyclerView) findViewById(R.id.rvTag))
-//                .setOrientation(LinearLayout.VERTICAL)
+        .setLayoutManager(ViewBuidler.LayoutManager.STAGGERED)
+        .setOrientation(LinearLayout.HORIZONTAL)
+        .setSpanCount(3)
         .setCustomSelectedStyle(R.style.CustomTagSelectedStyle, R.drawable.custom_bg_tag_selected)
         .setCustomUnselectedStyle(R.style.CustomTagUnselectedStyle, R.drawable.custom_bg_tag_unselected)
-        .setEntries(tagCategories)
+        .setEntries(entries)
         .setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void OnItemClick(Entry entry, int position) {
-                Toast.makeText(MainActivity.this, entry.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Tag 1: " + entry.toString(), Toast.LENGTH_LONG).show();
             }
         })
         .create();
