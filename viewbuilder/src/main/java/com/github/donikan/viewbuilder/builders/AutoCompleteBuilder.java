@@ -3,8 +3,10 @@ package com.github.donikan.viewbuilder.builders;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 
 import com.github.donikan.viewbuilder.adapters.SpinnerAdapter;
@@ -18,7 +20,7 @@ import java.util.List;
  * Created by DONIKAN on 15/03/2018.
  */
 
-public class SpinnerBuilder {
+public class AutoCompleteBuilder {
 
     protected List<Entry> mEntries;
 
@@ -27,88 +29,96 @@ public class SpinnerBuilder {
     protected SpinnerAdapter mAdapter;
 
     protected Context mContext;
-    protected Spinner mSpinner;
+    protected AutoCompleteTextView mAutoCompleteTextView;
     protected int mCustomView;
 
-    public SpinnerBuilder(Context context) {
+    public AutoCompleteBuilder(Context context) {
         mEntries = new ArrayList<>();
         mContext = context;
         mCustomView = android.R.layout.simple_dropdown_item_1line;
         mAdapter = new SpinnerAdapter(mContext, mCustomView, mEntries);
     }
 
-    public SpinnerBuilder setSpinner(@NonNull Spinner spinner) {
-        mSpinner = spinner;
+    public AutoCompleteBuilder setAutoCompleteTextView(@NonNull AutoCompleteTextView autoCompleteTextView) {
+        mAutoCompleteTextView = autoCompleteTextView;
+        mAutoCompleteTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!mAutoCompleteTextView.getText().toString().equals(""))
+                    if (mAutoCompleteTextView.getText().toString().trim().equals("")) {
+                        mAutoCompleteTextView.setText("");
+                        //mAutoCompleteTextView.showDropDown();
+                    }
+                if (hasFocus)
+                    mAutoCompleteTextView.showDropDown();
+            }
+        });
+
+        mAutoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!mAutoCompleteTextView.getText().toString().equals(""))
+                    if (mAutoCompleteTextView.getText().toString().trim().equals("")) {
+                        mAutoCompleteTextView.setText("");
+                        //mAutoCompleteTextView.showDropDown();
+                    }
+                mAutoCompleteTextView.showDropDown();
+                return false;
+            }
+        });
         return this;
     }
 
-    public SpinnerBuilder setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public AutoCompleteBuilder setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mListener = onItemClickListener;
         return this;
     }
 
-    public SpinnerBuilder setCustomView(@LayoutRes int customView) {
+    public AutoCompleteBuilder setCustomView(@LayoutRes int customView) {
         mCustomView = customView;
         mAdapter = new SpinnerAdapter(mContext, mCustomView, mEntries);
         return this;
     }
 
-    public SpinnerBuilder addPlaceholder(String placeholder) {
-        if (mEntries.size() > 0 && mEntries.get(0).getId() == -1L) {
-            mEntries.remove(0);
-        }
-        mEntries.add(0, new Entry(-1L, placeholder));
-        mAdapter = new SpinnerAdapter(mContext, mCustomView, mEntries);
-        return this;
-    }
-
-    public SpinnerBuilder removePlaceholder() {
-        if (mEntries.get(0).getId() == -1L) {
-            mEntries.remove(0);
-            mAdapter = new SpinnerAdapter(mContext, mCustomView, mEntries);
-        }
-        return this;
-    }
-
-    public SpinnerBuilder setEntries(List<Entry> entries) {
+    public AutoCompleteBuilder setEntries(List<Entry> entries) {
         mEntries.addAll(entries);
         mAdapter = new SpinnerAdapter(mContext, mCustomView, mEntries);
         return this;
     }
 
-    public SpinnerBuilder add(Entry entry) {
+    public AutoCompleteBuilder add(Entry entry) {
         mEntries.add(entry);
         mAdapter = new SpinnerAdapter(mContext, mCustomView, mEntries);
         return this;
     }
 
-    public SpinnerBuilder add(List<Entry> entries) {
+    public AutoCompleteBuilder add(List<Entry> entries) {
         mEntries.addAll(entries);
         mAdapter = new SpinnerAdapter(mContext, mCustomView, mEntries);
         return this;
     }
 
     public void create() {
-        if (mSpinner != null) {
-            mSpinner.setAdapter(mAdapter);
-            mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        if (mAutoCompleteTextView != null) {
+            mAutoCompleteTextView.setAdapter(mAdapter);
+            mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                     if (mListener != null) {
                         Entry entry = null;
-                        if (mAdapter.getItem(position).getId() != -1) entry = mAdapter.getItem(position);
+                        mAutoCompleteTextView.setText("");
+                        if (mAdapter.getItem(position).getId() != -1) {
+                            entry = mAdapter.getItem(position);
+                            mAutoCompleteTextView.setText(entry.getTitle());
+                        }
+                        mAutoCompleteTextView.setSelection(mAutoCompleteTextView.getText().length());
                         mListener.OnItemClick(entry, position);
                     }
                 }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-
-                }
-
             });
         } else {
-            throw new RuntimeException("Spinner cannot be null");
+            throw new RuntimeException("AutoCompleteTextView cannot be null");
         }
     }
 
@@ -120,9 +130,9 @@ public class SpinnerBuilder {
         return mEntries;
     }
 
-    public Entry getSelectedEntry() {
-        return mAdapter.getItem(mSpinner.getSelectedItemPosition());
-    }
+    /*public Entry getSelectedEntry() {
+        return mAdapter.getItem(mAutoCompleteTextView.getSelectedItemPosition());
+    }*/
 
     public int getCustomView() {
         return mCustomView;

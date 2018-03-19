@@ -2,16 +2,14 @@ package com.github.donikan.viewbuidler.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.donikan.viewbuilder.ViewBuidler;
+import com.github.donikan.viewbuilder.builders.AutoCompleteBuilder;
 import com.github.donikan.viewbuilder.builders.RadioBuilder;
 import com.github.donikan.viewbuilder.builders.SpinnerBuilder;
 import com.github.donikan.viewbuilder.builders.TagBuilder;
@@ -31,24 +29,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // fill entries
-        categories = DataFixture.getCategoies();
-        entries = new ArrayList<>();
-
-        for (int i = 0; i < categories.size(); i++) {
-            entries.add(new Entry<Category>(categories.get(i).getId(), categories.get(i).getTitle(), categories.get(i)));
-            entries.add(new Entry<Category>(categories.get(i).getId(), categories.get(i).getTitle(), categories.get(i)));
-        }
-
-        entries.get(0).setSelected(true);
+        getEntries();
 
         setUpTag();
         setUpRadio();
         setUpSpinner();
+        setUpAutoCompleteTextView();
+    }
+
+    private void getEntries() {
+        // fill entries
+        categories = DataFixture.getCategoies();
+        entries = new ArrayList<>();
+
+        for (Category category : categories) {
+            entries.add(new Entry<Category>(category.getId(), category.getTitle(), category));
+        }
+
+        // select default first item
+        entries.get(0).setSelected(true);
     }
 
     private void setUpTag() {
-        // Tag
         new TagBuilder(MainActivity.this)
                 .setRecyclerView((RecyclerView) findViewById(R.id.rvTag1))
                 .setLayoutManager(ViewBuidler.LayoutManager.STAGGERED)
@@ -67,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpRadio() {
-        // Radio
         RadioBuilder radioBuilder = new RadioBuilder(MainActivity.this)
                 .setRecyclerView((RecyclerView) findViewById(R.id.rvRadio))
                 .setLayoutManager(ViewBuidler.LayoutManager.STAGGERED)
@@ -101,6 +102,21 @@ public class MainActivity extends AppCompatActivity {
                 });
         spinnerBuilder.create();
 //        spinnerBuilder.removePlaceholder();
+//        spinnerBuilder.add(new Entry<Category>(7L, "School", new Category(7L, "School")));
+    }
+
+    private void setUpAutoCompleteTextView() {
+        AutoCompleteBuilder autoCompleteBuilder = new AutoCompleteBuilder(MainActivity.this)
+                .setAutoCompleteTextView((AutoCompleteTextView) findViewById(R.id.actv))
+//                .setCustomView(R.layout.custom_item_spinner)
+                .setEntries(entries)
+                .setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void OnItemClick(Entry entry, int position) {
+                        Toast.makeText(MainActivity.this, "AutoCompleteTextView: " + entry.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+        autoCompleteBuilder.create();
 //        spinnerBuilder.add(new Entry<Category>(7L, "School", new Category(7L, "School")));
     }
 }
