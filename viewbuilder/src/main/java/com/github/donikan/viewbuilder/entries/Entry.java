@@ -68,11 +68,12 @@ public class Entry<T> {
 
     @Override
     public String toString() {
-        return "Entry {" +
+        String entry = "Entry {" +
                 "id = " + id +
                 ", title = '" + title + '\'' +
-                ", selected = " + selected +
-                ", data = {" + data.toString() + '}' +
-                '}';
+                ", selected = " + selected;
+        if (data != null) entry += ", data = {" + data.toString() + '}';
+
+        return entry += '}';
     }
 }

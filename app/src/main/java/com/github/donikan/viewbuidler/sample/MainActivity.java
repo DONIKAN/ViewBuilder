@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         setUpTag();
         setUpRadio();
+        setUpSpinner();
     }
 
     private void setUpTag() {
@@ -87,16 +88,19 @@ public class MainActivity extends AppCompatActivity {
     private void setUpSpinner() {
         SpinnerBuilder spinnerBuilder = new SpinnerBuilder(MainActivity.this)
                 .setSpinner((Spinner) findViewById(R.id.spinner))
-//                .setCustomView(R.layout.custom_item_radio)
-                .addPlaceholder("Un spinner")
+//                .setCustomView(R.layout.custom_item_spinner)
+                .addPlaceholder("Select item ...")
                 .setEntries(entries)
-                /*.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                .setOnItemClickListener(new OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                        Toast.makeText(MainActivity.this, "Spinner: " + entry.toString(), Toast.LENGTH_LONG).show();
+                    public void OnItemClick(Entry entry, int position) {
+                        String _entry = "None item selected";
+                        if (entry != null) _entry = entry.toString();
+                        Toast.makeText(MainActivity.this, "Spinner: " + _entry, Toast.LENGTH_LONG).show();
                     }
-                })*/;
+                });
         spinnerBuilder.create();
-//        radioBuilder.add(new Entry<Category>(6L, "Life", new Category(6L, "Life")));
+//        spinnerBuilder.removePlaceholder();
+//        spinnerBuilder.add(new Entry<Category>(7L, "School", new Category(7L, "School")));
     }
 }
