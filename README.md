@@ -53,7 +53,7 @@ new TagBuilder(MainActivity.this)
         .setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void OnItemClick(Entry entry, int position) {
-                Toast.makeText(MainActivity.this, "Tag 1: " + entry.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Tag : " + entry.toString(), Toast.LENGTH_LONG).show();
             }
         })
         .create();
