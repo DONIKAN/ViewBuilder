@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // select default first item
-        entries.get(0).setSelected(true);
+        entries.get(2).setSelected(true);
     }
 
     private void setUpTag() {

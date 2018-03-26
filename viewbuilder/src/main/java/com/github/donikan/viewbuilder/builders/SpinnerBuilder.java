@@ -112,6 +112,12 @@ public class SpinnerBuilder {
                 }
 
             });
+            for (int i=0; i < mEntries.size(); i++) {
+                if (mEntries.get(i).isSelected()) {
+                    mSpinner.setSelection(i);
+                    break;
+                }
+            }
         } else {
             throw new RuntimeException("Spinner cannot be null");
         }
