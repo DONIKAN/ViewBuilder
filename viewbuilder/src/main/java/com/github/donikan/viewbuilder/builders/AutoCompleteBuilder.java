@@ -98,7 +98,7 @@ public class AutoCompleteBuilder {
         return this;
     }
 
-    public void create() {
+    public AutoCompleteBuilder create() {
         if (mAutoCompleteTextView != null) {
             mAutoCompleteTextView.setAdapter(mAdapter);
             mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -120,6 +120,7 @@ public class AutoCompleteBuilder {
         } else {
             throw new RuntimeException("AutoCompleteTextView cannot be null");
         }
+        return this;
     }
 
     public Context getContext() {

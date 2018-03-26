@@ -88,7 +88,7 @@ public class SpinnerBuilder {
         return this;
     }
 
-    public void create() {
+    public SpinnerBuilder create() {
         if (mSpinner != null) {
             mSpinner.setAdapter(mAdapter);
             mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -96,7 +96,12 @@ public class SpinnerBuilder {
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     if (mListener != null) {
                         Entry entry = null;
-                        if (mAdapter.getItem(position).getId() != -1) entry = mAdapter.getItem(position);
+                        try {
+                            if (mAdapter.getItem(position).getId() != -1)
+                                entry = mAdapter.getItem(position);
+                        } catch (Exception ignored) {
+
+                        }
                         mListener.OnItemClick(entry, position);
                     }
                 }
@@ -110,6 +115,7 @@ public class SpinnerBuilder {
         } else {
             throw new RuntimeException("Spinner cannot be null");
         }
+        return this;
     }
 
     public Context getContext() {
@@ -121,7 +127,11 @@ public class SpinnerBuilder {
     }
 
     public Entry getSelectedEntry() {
-        return mAdapter.getItem(mSpinner.getSelectedItemPosition());
+        Entry entry = mAdapter.getItem(mSpinner.getSelectedItemPosition());
+
+        if (entry != null && entry.getId() != -1) return entry;
+
+        return null;
     }
 
     public int getCustomView() {

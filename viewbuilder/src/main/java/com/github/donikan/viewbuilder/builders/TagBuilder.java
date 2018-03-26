@@ -160,7 +160,7 @@ public class TagBuilder {
         return this;
     }
 
-    public void create() {
+    public TagBuilder create() {
         if (mRecyclerview != null) {
             mRecyclerview.setHasFixedSize(true);
             mRecyclerview.setLayoutManager(mLayoutManager);
@@ -168,6 +168,7 @@ public class TagBuilder {
         } else {
             throw new RuntimeException("RecyclerView cannot be null");
         }
+        return this;
     }
 
     public Context getContext() {

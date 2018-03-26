@@ -145,7 +145,7 @@ public class RadioBuilder {
         return this;
     }
 
-    public void create() {
+    public RadioBuilder create() {
         if (mRecyclerview != null) {
             mRecyclerview.setHasFixedSize(true);
             mRecyclerview.setLayoutManager(mLayoutManager);
@@ -153,6 +153,7 @@ public class RadioBuilder {
         } else {
             throw new RuntimeException("RecyclerView cannot be null");
         }
+        return this;
     }
 
     public Context getContext() {
