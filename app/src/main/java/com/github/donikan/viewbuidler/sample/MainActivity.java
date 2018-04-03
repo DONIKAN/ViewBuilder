@@ -3,13 +3,16 @@ package com.github.donikan.viewbuidler.sample;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.donikan.viewbuilder.ViewBuidler;
 import com.github.donikan.viewbuilder.builders.AutoCompleteBuilder;
+import com.github.donikan.viewbuilder.builders.CheckboxBuilder;
 import com.github.donikan.viewbuilder.builders.RadioBuilder;
 import com.github.donikan.viewbuilder.builders.SpinnerBuilder;
 import com.github.donikan.viewbuilder.builders.TagBuilder;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Category> categories;
     private List<Entry> entries;
 
+    private CheckboxBuilder checkboxBuilder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         setUpTag();
         setUpRadio();
+        setUpCheckbox();
         setUpSpinner();
         setUpAutoCompleteTextView();
     }
@@ -47,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // select default first item
-        entries.get(2).setSelected(true);
+        entries.get(3).setSelected(true);
     }
 
     private void setUpTag() {
@@ -74,16 +80,60 @@ public class MainActivity extends AppCompatActivity {
                 .setLayoutManager(ViewBuidler.LayoutManager.STAGGERED)
                 .setOrientation(LinearLayout.HORIZONTAL)
                 .setSpanCount(3)
-//                .setCustomView(R.layout.custom_item_radio)
+                .setCustomView(R.layout.custom_item_radio)
                 .setEntries(entries)
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void OnItemClick(Entry entry, int position) {
                         Toast.makeText(MainActivity.this, "Radio: " + entry.toString(), Toast.LENGTH_LONG).show();
                     }
-                });
-        radioBuilder.create();
+                })
+                .create();
         radioBuilder.add(new Entry<Category>(6L, "Life", new Category(6L, "Life")));
+    }
+
+    private void setUpCheckbox() {
+        List<Entry> checkboxEntries = entries;
+        for (int i = 0; i < checkboxEntries.size(); i++) {
+            if (i % 3 == 0) {
+                checkboxEntries.get(i).setSelected(true);
+            } else {
+                checkboxEntries.get(i).setSelected(false);
+            }
+        }
+        checkboxBuilder = new CheckboxBuilder(MainActivity.this)
+                .setRecyclerView((RecyclerView) findViewById(R.id.rvCheckbox))
+                .setLayoutManager(ViewBuidler.LayoutManager.LINEAR)
+                .setOrientation(LinearLayout.HORIZONTAL)
+//                .setSpanCount(3)
+//                .setCustomView(R.layout.custom_item_radio)
+                .setEntries(checkboxEntries)
+                /*.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void OnItemClick(Entry entry, int position) {
+                        Toast.makeText(MainActivity.this, "Checkbox: " + entry.toString(), Toast.LENGTH_LONG).show();
+                    }
+                })*/
+                .create();
+
+        Button btnCheckbox = (Button) findViewById(R.id.btnCheckbox);
+
+        btnCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Entry> _entries = checkboxBuilder.getSelectedEntries();
+
+                String entriesValue = "Checkbox entries";
+
+                if (_entries.isEmpty()) entriesValue += "\nEmpty";
+                else
+                    for (Entry _entry : _entries) {
+                        entriesValue += "\n" + _entry.getTitle();
+                    }
+
+                Toast.makeText(MainActivity.this, entriesValue, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void setUpSpinner() {
@@ -99,8 +149,9 @@ public class MainActivity extends AppCompatActivity {
                         if (entry != null) _entry = entry.toString();
                         Toast.makeText(MainActivity.this, "Spinner: " + _entry, Toast.LENGTH_LONG).show();
                     }
-                });
-        spinnerBuilder.create();
+                })
+                .create();
+
 //        spinnerBuilder.removePlaceholder();
 //        spinnerBuilder.add(new Entry<Category>(7L, "School", new Category(7L, "School")));
     }
@@ -115,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
                     public void OnItemClick(Entry entry, int position) {
                         Toast.makeText(MainActivity.this, "AutoCompleteTextView: " + entry.toString(), Toast.LENGTH_LONG).show();
                     }
-                });
-        autoCompleteBuilder.create();
+                })
+                .create();
 //        spinnerBuilder.add(new Entry<Category>(7L, "School", new Category(7L, "School")));
     }
 }

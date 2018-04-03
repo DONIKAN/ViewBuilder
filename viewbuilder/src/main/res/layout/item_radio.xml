@@ -12,7 +12,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:drawableLeft="@drawable/btn_radio"
+        android:drawableLeft="@drawable/radio"
         android:drawablePadding="10dp"
         tools:text="Sport"
         android:textSize="15sp" />
