@@ -2,6 +2,7 @@ package com.github.donikan.viewbuidler.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -13,11 +14,13 @@ import android.widget.Toast;
 import com.github.donikan.viewbuilder.ViewBuidler;
 import com.github.donikan.viewbuilder.builders.AutoCompleteBuilder;
 import com.github.donikan.viewbuilder.builders.CheckboxBuilder;
+import com.github.donikan.viewbuilder.builders.LoadingDialogBuilder;
 import com.github.donikan.viewbuilder.builders.RadioBuilder;
 import com.github.donikan.viewbuilder.builders.SpinnerBuilder;
 import com.github.donikan.viewbuilder.builders.TagBuilder;
 import com.github.donikan.viewbuilder.entries.Entry;
 import com.github.donikan.viewbuilder.listeners.OnItemClickListener;
+import com.github.donikan.viewbuilder.views.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +39,23 @@ public class MainActivity extends AppCompatActivity {
 
         getEntries();
 
+        setupLoadingDialog();
         setUpTag();
         setUpRadio();
         setUpCheckbox();
         setUpSpinner();
         setUpAutoCompleteTextView();
+    }
+
+    private void setupLoadingDialog() {
+        new LoadingDialogBuilder(this)
+//                .setCancelable(false)
+//                .setOrientation(LinearLayoutManager.VERTICAL)
+//                .setSpinIcon(LoadingDialog.SPIN_ICON_3)
+//                .setSpinSize(LoadingDialog.SPIN_LARGE_SIZE)
+                .setSpinColor(R.color.colorOrange)
+                .create()
+                .show();
     }
 
     private void getEntries() {

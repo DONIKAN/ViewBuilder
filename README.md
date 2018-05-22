@@ -19,7 +19,7 @@ and:
 
 ```gradle
 dependencies {
-    compile 'com.github.DONIKAN:ViewBuilder:1.05'
+    compile 'com.github.DONIKAN:ViewBuilder:1.06'
 }
 ```
 

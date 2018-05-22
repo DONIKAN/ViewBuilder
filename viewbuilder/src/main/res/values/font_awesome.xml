@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spins -->
+    <string name="fa_spin_1">&#xe830;</string>
+    <string name="fa_spin_2">&#xe831;</string>
+    <string name="fa_spin_3">&#xe832;</string>
+    <string name="fa_spin_4">&#xe834;</string>
+    <string name="fa_spin_5">&#xe838;</string>
+    <string name="fa_spin_6">&#xe839;</string>
+
+    <!-- Icons -->
+    <string name="fa_exchange">&#xf0ec;</string>
+    <string name="fa_chart_line">&#xf201;</string>
+    <string name="fa_cart_plus">&#xf217;</string>
+    <string name="fa_user_plus">&#xf234;</string>
+    <string name="fa_briefcase">&#xe896;</string>
+    <string name="fa_attention">&#xe844;</string>
+    <string name="fa_attention_circle">&#xe843;</string>
+    <string name="fa_info_circle">&#xe826;</string>
+    <string name="fa_window_close_o">&#xf2d4;</string>
+    <string name="fa_icon_cancel_1">&#xe8d6;</string>
+    <string name="fa_icon_left_thin">&#xe950;</string>
+    <string name="fa_icon_ellipsis_vert">&#xf142;</string>
+    <string name="fa_icon_align_justify">&#xe8a7;</string>
+    <string name="fa_icon_menu">&#xf0c9;</string>
+    <string name="fa_icon_sort_up">&#xf0de;</string>
+    <string name="fa_icon_sort_down">&#xf0dd;</string>
+    <string name="fa_icon_commenting_o">&#xf27b;</string>
+    <string name="fa_icon_share_thin">&#xe91f;</string>
+    <string name="fa_icon_heart">&#xe818;</string>
+    <string name="fa_icon_heart_empty">&#xe819;</string>
+    <string name="fa_icon_filter">&#xedc8;</string>
+    <string name="fa_icon_equalizer">&#xeb5c;</string>
+    <string name="fa_icon_star_empty">&#xe81b;</string>
+    <string name="fa_icon_check">&#xe8d5;</string>
+    <string name="fa_icon_search">&#xe816;</string>
+    <string name="fa_icon_doc_add">&#xea20;</string>
+</resources>
